@@ -48,49 +48,6 @@ the script `docker-entrypoint.sh` makes sure everything the app needs is in a wr
 
 result: the app actually runs from `/data` (a volume), while the image stays read‑only.
 
-## deploy: build and run
-
-build the image:
-
-```bash
-docker build -t nextjs-rofs .
-```
-
-run it (ephemeral data):
-
-```bash
-docker run --rm \
-  -p 8080:8080 \
-  -e DATABASE_URL="file:/data/database.db" \
-  nextjs-rofs
-```
-
-run it with persistent data volume:
-
-bash/zsh:
-
-```bash
-mkdir -p ./data
-docker run --rm \
-  -p 8080:8080 \
-  -e DATABASE_URL="file:/data/database.db" \
-  -v "$(pwd)/data:/data" \
-  nextjs-rofs
-```
-
-windows powershell:
-
-```powershell
-mkdir data -ea 0
-docker run --rm `
-  -p 8080:8080 `
-  -e DATABASE_URL="file:/data/database.db" `
-  -v "${pwd}/data:/data" `
-  nextjs-rofs
-```
-
-open `http://localhost:8080`.
-
 ## `npx next-on-a-stick`
 
 run this helper inside an existing next.js project to drop in the docker/read‑only scaffolding from this repo:
@@ -149,8 +106,8 @@ docker exec -it <container-id> sh -lc "./node_modules/.bin/prisma db push"
 ## todo
 
 - this project still NEEDS to be TESTED properly and thoroughly
-- check node_modules copying
-- prisma migrations are basically untested
+- npx script needs to be also tested
+- in final deployed solution, check node_modules working, prisma bins, etc.
 
 ## notes
 
