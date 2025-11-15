@@ -1,6 +1,6 @@
 {
     "name": "next-on-a-stick",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "bin": {
         "next-on-a-stick": "./bin/next-on-a-stick.js"
     },
