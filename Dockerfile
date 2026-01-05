@@ -74,9 +74,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./standalone/
 # Copy the complete .next directory for staging in a different location
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./next_build/
 
-# Copy generated Prisma Client (needed for migrations and runtime)
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
+# Copy the FULL node_modules from builder (for serverExternalPackages support)
+# This ensures all packages like node-cron, nodemailer, prisma, etc. are available at runtime
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
 
 ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"

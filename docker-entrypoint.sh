@@ -50,11 +50,9 @@ if [ ! -f /data/server.js ]; then
     cp -r /app/prisma /data/
   fi
 
-  # Copy Prisma client from image - standalone might not include it
-  if [ -d "/app/node_modules/.prisma" ]; then
-    mkdir -p /data/node_modules
-    cp -r /app/node_modules/.prisma /data/node_modules/
-    cp -r /app/node_modules/@prisma /data/node_modules/
+  # Copy node_modules for external packages (serverExternalPackages, prisma, etc)
+  if [ -d "/app/node_modules" ]; then
+    cp -r /app/node_modules /data/
   fi
 
   echo "[init] Running database migrations (first boot)..."
@@ -80,13 +78,11 @@ if [ -d "/app/prisma" ]; then
   cp -r /app/prisma /data/
 fi
 
-# Always refresh Prisma Client to match the new schema
-echo "[init] Syncing Prisma Client..."
-if [ -d "/app/node_modules/.prisma" ]; then
-  mkdir -p /data/node_modules
-  rm -rf /data/node_modules/.prisma /data/node_modules/@prisma
-  cp -r /app/node_modules/.prisma /data/node_modules/
-  cp -r /app/node_modules/@prisma /data/node_modules/
+# Always sync full node_modules to ensure all serverExternalPackages are up-to-date
+echo "[init] Syncing node_modules..."
+if [ -d "/app/node_modules" ]; then
+  rm -rf /data/node_modules
+  cp -r /app/node_modules /data/
 fi
 
 ########################################
