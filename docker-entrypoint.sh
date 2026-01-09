@@ -55,6 +55,13 @@ if [ ! -f /data/server.js ]; then
     cp -r /app/node_modules /data/
   fi
 
+  # Sync public folder for static assets (logo, images, etc)
+  echo "[init] Syncing public assets..."
+  if [ -d "/app/public" ]; then
+    rm -rf /data/public
+    cp -r /app/public /data/
+  fi
+
   echo "[init] Running database migrations (first boot)..."
   cd /data
   prisma migrate deploy || prisma db push
